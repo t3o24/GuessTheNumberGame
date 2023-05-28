@@ -1,70 +1,98 @@
-﻿using System;
-
+using System;
 
 namespace ConsoleApp5
-{
-    internal class Program
     {
-        private static void Main()
+        internal class Program
         {
-            Random random = new Random();
-            int computerNumber = random.Next(1, 101);
-            int guessCount = 0;
-            string choice;
-            bool continuePlaying = true;
-
-            while (true)
+            private static void Main()
             {
-                Console.WriteLine("Guess a number between 1 - 100");
+                Random random = new Random();
+                int computerNumber = random.Next(1, 101);
+                int guessCount = 0;
+                int maxGuesses = 5; 
+                string choice;
+                bool continuePlaying = true;
 
-                string playerInput = Console.ReadLine();
-                bool isValid = int.TryParse(playerInput, out int playerNumber);
-
-                if (isValid)
+                while (true)
                 {
-                    guessCount++;
+                    Console.WriteLine("Guess a number between 1 - 100");
 
-                    if (playerNumber == computerNumber)
+                    string playerInput = Console.ReadLine();
+                    bool isValid = int.TryParse(playerInput, out int playerNumber);
+
+                    if (isValid)
                     {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("You guessed it");
-                        Console.ResetColor();
-                        Console.WriteLine("It took you " + guessCount + " attempts to guess the right number!");
+                        guessCount++;
 
-                        Console.WriteLine("Would you like to play again (Y/N)");
-                        choice = Console.ReadLine().ToUpper();
-
-                        if (choice != "Y")
+                        if (playerNumber == computerNumber)
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                            Console.WriteLine("Thank you for playing!");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("You guessed it");
                             Console.ResetColor();
-                            continuePlaying = false;
-                            break;
+                            Console.WriteLine("It took you " + guessCount + " attempts to guess the right number!");
+
+                            Console.WriteLine("Would you like to play again (Y/N)");
+                            choice = Console.ReadLine().ToUpper();
+
+                            if (choice != "Y")
+                            {
+                                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                                Console.WriteLine("Thank you for playing!");
+                                Console.ResetColor();
+                                continuePlaying = false;
+                                break;
+                            }
+                            else
+                            {
+                                Console.Clear();
+                                guessCount = 0; 
+                                computerNumber = random.Next(1, 101); 
+                            }
+                        }
+                        else if (playerNumber > computerNumber)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Too High!");
                         }
                         else
                         {
-                            Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.WriteLine("Too Low!");
                         }
-                    }
-                    else if (playerNumber > computerNumber)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Too High!");
+
+                        if (guessCount >= maxGuesses)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("You have reached the maximum number of guesses.");
+                            Console.ResetColor();
+                            Console.WriteLine("The number was: " + computerNumber);
+
+                            Console.WriteLine("Would you like to play again (Y/N)");
+                            choice = Console.ReadLine().ToUpper();
+
+                            if (choice != "Y")
+                            {
+                                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                                Console.WriteLine("Thank you for playing!");
+                                Console.ResetColor();
+                                continuePlaying = false;
+                                break;
+                            }
+                            else
+                            {
+                                Console.Clear();
+                                guessCount = 0; 
+                                computerNumber = random.Next(1, 101);
+                            }
+                        }
                     }
                     else
                     {
-                        Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.WriteLine("Too Low!");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Invalid Input.");
                     }
+                    Console.ResetColor();
                 }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine("Invalid Input.");
-                }
-                Console.ResetColor();
             }
         }
-    }
 }
